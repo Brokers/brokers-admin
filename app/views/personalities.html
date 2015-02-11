@@ -1,0 +1,27 @@
+<table style="width:100%">
+  <tr>
+    <th>Codigo</td>
+    <th>Nombre</td>
+    <th>Descripción</td>
+    <th>Reflexiones</td>  </tr>
+
+  <tr ng-repeat="(personality_id, personality) in personalities">
+    <td style="width:5%">
+        {{personality_id}}
+    </td>
+    <td style="width:10%">
+        {{personality.name}}
+    </td>
+    <td style="width:45%">
+        {{personality.description}}
+    </td>
+    <td style="width:40%">
+        <ul>
+            <li ng-repeat="reflexion in personality.reflexions">
+                {{reflexion}}
+            </li>
+        </ul>
+    </td>
+  </tr>
+
+</table>

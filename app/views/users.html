@@ -1,0 +1,75 @@
+<h3>Usuarios</h3>
+
+<button
+    ng-if="!creatingUser"
+    ng-click="openCreateUserModal()">
+    Nuevo Usuario
+</button>
+
+<div ng-if="creatingUser">
+    <label>
+        Nombre
+        <input ng-model="newUser.name"/>
+    </label>
+
+    <label>
+        E-Mail
+        <input ng-model="newUser.email"/>
+    </label>
+
+    <label>
+        Compañía
+        <select
+            ng-options="company_id as company.name for (company_id , company) in companies"
+            ng-model="newUser.company_id"
+        ></select>
+    </label>
+
+    <label>
+        ¿Asignar código?
+        <input type="checkbox" ng-model="newUserAsignCode" ng-init="newUserAsignCode=true">
+    </label>
+
+    <button ng-click="closeCreateUserModal()">
+        Cancelar
+    </button>
+
+    <button ng-click="createUser(newUser, newUserAsignCode)">
+        Crear
+    </button>
+</div>
+
+
+<table style="width:100%">
+  <tr>
+    <th>Foto</td>
+    <th>Nombre</td>
+    <th>Compañía</td>
+    <th>E-Mail</td>
+    <th>Pruebas</td>
+  </tr>
+
+  <tr ng-repeat="(user_id, user) in users">
+    <td >
+        <img style="height: 64px;" ng-src="{{user.picture || 'http://placehold.it/64'}}"/>
+    </td>
+    <td>
+        {{user.name}}
+    </td>
+    <td>
+        {{user.company_id}}
+    </td>
+    <td>
+        {{user.email}}
+    </td>
+    <td>
+        <span ng-repeat="(test_id, _) in user.tests">
+            <a ng-href="https://brokers.firebaseapp.com/#/test/{{test_id}}/results" target="_blank">
+                {{$index}}
+            </a>
+            <span ng-if="!$last">, </span>
+        </span>
+    </td>
+  </tr>
+
+</table>
