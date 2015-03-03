@@ -59,7 +59,9 @@
         </a>
     </td>
     <td>
-        {{user.company_id}}
+        <a ng-href="#/companies/{{user.company_id}}">
+            {{user.company.name}}
+        </a>
     </td>
     <td>
         {{user.email}}

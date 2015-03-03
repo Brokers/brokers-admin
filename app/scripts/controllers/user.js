@@ -8,7 +8,7 @@
  * Controller of the brokersAdminApp
  */
 angular.module('brokersAdminApp')
-  .controller('UserCtrl', function ($rootScope, $scope, $firebase, fbURL, $location, $routeParams, _) {
+  .controller('UserCtrl', function ($rootScope, $scope, $firebase, fbURL, $location, $routeParams, _, $q) {
     var Firebase = window.Firebase;
     var mainRef = new Firebase(fbURL);
     var authData = mainRef.getAuth();
@@ -21,6 +21,14 @@ angular.module('brokersAdminApp')
 
     $scope.user = userSync.$asObject();
 
+    function updateUser() {
+        $scope.companyId = $scope.user.company_id;
+        // var companySync = $firebase(new Firebase(fbURL + '/companies/' + $scope.user.company_id));
+        // $scope.company = companySync.$asObject();
+    }
+    $scope.user.$loaded(updateUser);
+    $scope.user.$watch(updateUser);
+
     var companiesRef = new Firebase(fbURL + '/companies/');
     var companiesSync = $firebase(companiesRef);
     $scope.companies = companiesSync.$asObject();
@@ -30,29 +38,78 @@ angular.module('brokersAdminApp')
     });
 
     // Todo: Borrar de empresas, borrar código y borrar test.
-    // $scope.remove = function() {
-    //     if(window.confirm('Confirme que desea borrar este usuario, no hay vuelta atras.')) {
-    //         $scope.user.$remove().then(
-    //             function() {
-    //                 $location.path('/users');
-    //                 window.alert('El usuario se ha borrado exitosamente.');
-    //             },
-    //             function(error) {
-    //                 window.alert('Error: ' + error);
-    //             }
-    //         );
-    //     }
-    // };
+    $scope.remove = function() {
+        if(window.confirm('Confirme que desea borrar este usuario, no hay vuelta atras.')) {
+            $firebase(
+                new Firebase(fbURL + '/companies/' + $scope.user.company_id + '/staff/')
+            ).$remove($scope.userCode)
+                .then(function() {
+                    if($scope.user.tests) {
+                        var promises = [];
+                        var testsSync = $firebase(new Firebase(fbURL + '/tests/'));
+
+                        _($scope.user.tests).each(function(__, testId) {
+                            promises.push(testsSync.$remove(testId));
+                        });
+
+                        return $q.all(promises);
+                    } else {
+                        return $q.when(true);
+                    }
+                })
+                .then(function() {
+                    if($scope.user.code) {
+                        var codesSync = $firebase(new Firebase(fbURL + '/access_codes/'));
+                        return codesSync.$remove($scope.user.code);
+                    } else {
+                        return $q.when(true);
+                    }
+                })
+                .then(function() { return $scope.user.$remove(); })
+                .then(function() {
+
+                    $location.path('/users');
+                    window.alert('El usuario se ha borrado exitosamente.');
+
+                },
+                function(error) {
+                    window.alert('Error: ' + error);
+                }
+            );
+        }
+    };
 
     $scope.save = function() {
-        $scope.user.$save().then(
-            function() {
-                window.alert('Cambios salvados.');
-            },
-            function(error) {
-                window.alert('Error: ' + error);
-            }
-        );
+        function saveUser() {
+            return $scope.user.$save().then(
+                function() {
+                    window.alert('Cambios salvados.');
+                },
+                function(error) {
+                    window.alert('Error: ' + error);
+                }
+            );
+        }
+
+        if($scope.user.company_id !== $scope.companyId) {
+            $firebase(
+                new Firebase(fbURL + '/companies/' + $scope.user.company_id + '/staff/')
+            ).$remove($scope.userCode)
+            .then(function() {
+                return $firebase(
+                    new Firebase(fbURL + '/companies/' + $scope.companyId + '/staff/')
+                ).$set($scope.userCode, true);
+            }).then(function() {
+                $scope.user.company_id = $scope.companyId;
+                return saveUser();
+            }, function(error) {
+                window.alert(error);
+            });
+
+        } else {
+            saveUser();
+        }
+        
     };
 
     var parseTests = function() {

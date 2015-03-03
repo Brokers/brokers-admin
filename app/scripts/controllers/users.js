@@ -22,6 +22,15 @@ angular.module('brokersAdminApp')
     var companiesSync = $firebase(companiesRef);
     $scope.companies = companiesSync.$asObject();
 
+    function hydrateCompany() {
+        $scope.users.forEach(function(user) {
+            var companySync = $firebase(new Firebase(fbURL + '/companies/' + user.company_id));
+            user.company = companySync.$asObject();
+        });
+    }
+    $scope.users.$loaded(hydrateCompany);
+    $scope.users.$watch(hydrateCompany);
+
     $scope.creatingUser = false;
 
     $scope.openCreateUserModal = function() {
