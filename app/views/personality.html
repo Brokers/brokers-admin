@@ -1,0 +1,41 @@
+<div class="personality-detail">
+    <h3>Personalidad en detalle</h3>
+
+    <label class="field code">
+        Código: {{ personalityCode }}
+    </label>
+
+    <label class="field name">
+        Nombre
+        <input ng-model="personality.name"/>
+    </label>
+
+    <label class="field description">
+        Descripción
+        <textarea ng-model="personality.description"></textarea>
+    </label>
+
+    <div class="reflexions-area">
+        Reflexiones
+        <textarea ng-repeat="reflexion in personality.reflexions track by $index"
+                ng-model="personality.reflexions[$index]"></textarea>
+
+        <button ng-click="personality.reflexions.push('')">
+            Agregar Reflexión
+        </button>
+    </div>
+
+    <div class="buttons">
+        <button ng-click="remove()">
+            Eliminar
+        </button>
+
+        <a href="#/report_information/personalities">
+            Volver a Lista
+        </a>
+
+        <button ng-click="save()">
+            Guardar Cambios
+        </button>
+    </div>
+</div>

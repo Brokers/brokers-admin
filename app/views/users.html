@@ -54,7 +54,9 @@
         <img style="height: 64px;" ng-src="{{user.picture || 'http://placehold.it/64'}}"/>
     </td>
     <td>
-        {{user.name}}
+        <a ng-href="#/users/{{user_id}}">
+            {{user.name}}
+        </a>
     </td>
     <td>
         {{user.company_id}}

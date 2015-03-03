@@ -18,4 +18,26 @@ angular.module('brokersAdminApp')
     var personalitiesSync = $firebase(personalitiesRef);
     $scope.personalities = personalitiesSync.$asObject();
 
+    $scope.creatingPersonality = false;
+
+    $scope.openCreatePersonalityModal = function() {
+        $scope.creatingPersonality = true;
+        $scope.newPersonality = {
+            'reflexions': ['', ''],
+        };
+    };
+
+    $scope.closeCreatePersonalityModal = function() {
+        $scope.creatingPersonality = false;
+    };
+
+    $scope.createPersonality = function(newPersonality) {
+        var code = newPersonality.code;
+        delete newPersonality.code;
+        personalitiesSync.$set(code, newPersonality).then(function(personalityRef) {
+            console.log('Personality created.');
+        }, function(error) {
+            window.alert('Error: ' + error);
+        });
+    };
 });

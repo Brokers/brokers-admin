@@ -37,6 +37,7 @@ angular.module('brokersAdminApp')
     };
 
     $scope.createUser = function(newUser, newUserAsignCode) {
+        var codeToken;
         usersSync.$push(newUser).then(function(userRef) {
             console.log('User created.');
             newUser.id = userRef.key();
@@ -54,27 +55,29 @@ angular.module('brokersAdminApp')
                     'user_id': newUser.id,
                     'expiration_date': -1,
                 };
-                //TODO: Chequear si ya existe el código
-                var codeToken = Date.now().toString(36).slice(-6).toUpperCase();
 
-                codesSync.$set(codeToken, newCode).then(
-                    function() {
-                        console.log('Token created.');
-                        window.alert('Creado usuario con token.');
-                    },
-                    function(error) {
-                        window.alert('Error: ' + error);
-                    }
-                );
+                //TODO: Chequear si ya existe el código
+                codeToken = Date.now().toString(36).slice(-6).toUpperCase();
+
+                return codesSync.$set(codeToken, newCode);
             } else {
                 window.alert('Usuario creado.');
+                $scope.openCreateUserModal();
             }
+        }).then(function() {
+            console.log('Token created.');
 
+            var userRef = new Firebase(fbURL + '/users/' + newUser.id);
+            var userSync = $firebase(userRef);
+            return userSync.$set('code', codeToken);
+        }).then(function() {
+
+            window.alert('Creado usuario con token.');
+            $scope.openCreateUserModal();
+            
             return;
         }, function(error) {
             window.alert('Error: ' + error);
         });
     };
-
-    window.$scope = $scope;
   });

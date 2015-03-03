@@ -1,0 +1,61 @@
+<div class="user-detail">
+    <h3>Usuario en detalle</h3>
+
+    <label class="field code">
+        Identificador: {{ userCode }}
+    </label>
+
+    <label class="field name">
+        Nombre
+        <input ng-model="user.name"/>
+    </label>
+
+    <label class="field email">
+        E-Mail
+        <input ng-model="newUser.email"/>
+    </label>
+
+    <label>
+        Compañía
+        {{user.company_id}}
+        <!--select
+            ng-options="company_id as company.name for (company_id , company) in companies"
+            ng-model="user.company_id"
+        ></select-->
+    </label>
+
+    <div class="code-area">
+        Código Asignado: {{user.code}}
+        
+        <div class="test-area" ng-if="test">
+            Test
+            <span ng-if="test.stage == 'computed'">
+                <a ng-href="https://brokers.firebaseapp.com/#/test/{{testId}}/results" target="_blank">
+                   resuelto
+                </a>
+            </span>
+            <span ng-if="test.stage != 'computed'">
+                en proceso.
+            </span>
+            
+        </div>
+        <div class="test-area" ng-if="!test">
+            No ha echo el test.
+        </div>
+    </div>
+
+
+    <div class="buttons">
+        <!--button ng-click="remove()">
+            Eliminar
+        </button-->
+
+        <a href="#/users">
+            Volver a Lista
+        </a>
+
+        <!-- button ng-click="save()">
+            Guardar Cambios
+        </button -->
+    </div>
+</div>

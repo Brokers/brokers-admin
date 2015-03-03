@@ -1,13 +1,61 @@
+<h3>Personalidades (Datos para reportes)</h3>
+
+<button id="create-btn"
+    ng-if="!creatingPersonality"
+    ng-click="openCreatePersonalityModal()">
+    Nueva personalidad
+</button>
+
+<div id="create-personality-area" class="modal" ng-if="creatingPersonality">
+    <label class="field code">
+        Código
+        <input ng-model="newPersonality.code"/>
+    </label>
+
+    <label class="field name">
+        Nombre
+        <input ng-model="newPersonality.name"/>
+    </label>
+
+    <label class="field description">
+        Descripción
+        <textarea ng-model="newPersonality.description"></textarea>
+    </label>
+
+    <div class="reflexions-area">
+        Reflexiones
+        <textarea ng-repeat="reflexion in newPersonality.reflexions track by $index"
+                ng-model="newPersonality.reflexions[$index]"></textarea>
+
+        <button ng-click="newPersonality.reflexions.push('')">
+            Agregar Reflexión
+        </button>
+    </div>
+
+    <div class="buttons">
+        <button ng-click="closeCreatePersonalityModal()">
+            Cancelar
+        </button>
+
+        <button ng-click="createPersonality(newPersonality)">
+            Crear
+        </button>
+    </div>
+</div>
+
+
 <table style="width:100%">
   <tr>
-    <th>Codigo</td>
+    <th>Código</td>
     <th>Nombre</td>
     <th>Descripción</td>
     <th>Reflexiones</td>  </tr>
 
   <tr ng-repeat="(personality_id, personality) in personalities">
     <td style="width:5%">
-        {{personality_id}}
+        <a ng-href="#/report_information/personalities/{{personality_id}}">
+            {{personality_id}}
+        </a>
     </td>
     <td style="width:10%">
         {{personality.name}}

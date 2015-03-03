@@ -41,9 +41,17 @@ angular
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'
       })
+      .when('/users/:userId', {
+        templateUrl: 'views/user.html',
+        controller: 'UserCtrl'
+      })
       .when('/report_information/personalities', {
         templateUrl: 'views/personalities.html',
         controller: 'PersonalitiesCtrl'
+      })
+      .when('/report_information/personalities/:personalityId', {
+        templateUrl: 'views/personality.html',
+        controller: 'PersonalityCtrl'
       })
       .otherwise({
         redirectTo: '/login'

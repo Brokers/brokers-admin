@@ -23,7 +23,9 @@
     <div class="">
 
       <div class="header">
-        <h1>brokersAdmin</h1>
+        <h1>
+            <a href="#/index">Administración de Brokers</a>
+        </h1>
       </div>
 
       <div ng-view=""></div>
@@ -48,16 +50,20 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/firebase/firebase.js"></script>
     <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/services/underscore.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <script src="scripts/controllers/login.js"></script>
         <script src="scripts/controllers/companies.js"></script>
         <script src="scripts/controllers/users.js"></script>
         <script src="scripts/controllers/personalities.js"></script>
+        <script src="scripts/controllers/personality.js"></script>
+        <script src="scripts/controllers/user.js"></script>
         <!-- endbuild -->
 </body>
 </html>
