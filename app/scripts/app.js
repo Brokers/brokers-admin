@@ -37,6 +37,10 @@ angular
         templateUrl: 'views/companies.html',
         controller: 'CompaniesCtrl'
       })
+      .when('/companies/:companyId', {
+        templateUrl: 'views/company.html',
+        controller: 'CompanyCtrl'
+      })
       .when('/users', {
         templateUrl: 'views/users.html',
         controller: 'UsersCtrl'

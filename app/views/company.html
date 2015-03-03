@@ -1,0 +1,36 @@
+<div class="company-detail">
+    <h3>Compañía en detalle</h3>
+
+    <label class="field code">
+        Identificador: {{ companyCode }}
+    </label>
+
+    <label class="field name">
+        Nombre
+        <input ng-model="company.name"/>
+    </label>
+
+    <label>
+        Miembros
+        <span ng-repeat="(user_id, user) in staffList">
+            <a ng-href="#/users/{{user_id}}">
+                {{user.name}}
+            </a>
+            <span ng-if="!$last">, </span>
+        </span>
+    </label>
+
+    <div class="buttons">
+        <!--button ng-click="remove()">
+            Eliminar
+        </button-->
+
+        <a href="#/companies">
+            Volver a Lista
+        </a>
+
+        <button ng-click="save()">
+            Guardar Cambios
+        </button>
+    </div>
+</div>

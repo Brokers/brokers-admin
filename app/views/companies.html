@@ -1,0 +1,47 @@
+<h3>Compañías</h3>
+
+<button
+    ng-if="!creatingCompany"
+    ng-click="openCreateCompanyModal()">
+    Nueva Compañía
+</button>
+
+<div ng-if="creatingCompany">
+    <label>
+        Nombre
+        <input ng-model="newCompany.name"/>
+    </label>
+
+    <button ng-click="closeCreateCompanyModal()">
+        Cancelar
+    </button>
+
+    <button ng-click="createCompany(newCompany, newCompanyAsignCode)">
+        Crear
+    </button>
+</div>
+
+
+<table style="width:100%">
+  <tr>
+    <th>Nombre</td>
+    <th>Miembros</td>
+  </tr>
+
+  <tr ng-repeat="(company_id, company) in companies">
+    <td>
+        <a ng-href="#/companies/{{company_id}}">
+            {{company.name}}
+        </a>
+    </td>
+    <td>
+        <span ng-repeat="(user_id, user) in company.staff">
+            <a ng-href="#/users/{{user_id}}">
+                {{user.name}}
+            </a>
+            <span ng-if="!$last">, </span>
+        </span>
+    </td>
+  </tr>
+
+</table>

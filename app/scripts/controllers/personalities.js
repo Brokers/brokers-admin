@@ -36,6 +36,7 @@ angular.module('brokersAdminApp')
         delete newPersonality.code;
         personalitiesSync.$set(code, newPersonality).then(function(personalityRef) {
             console.log('Personality created.');
+            $scope.openCreatePersonalityModal();
         }, function(error) {
             window.alert('Error: ' + error);
         });
